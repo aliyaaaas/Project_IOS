@@ -28,7 +28,8 @@ struct MindMatesApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        ContentView()
+        //ContentView()
+          LoginScreen() 
       }
     }
   }
