@@ -17,7 +17,6 @@ struct FullTaskInfoView: View {
     
     @StateObject private var viewModel: FullTaskInfoViewModel
     
-    @State var attachedDocuments: [URL] = []
     @State private var showDocumentPicker = false
     
     @State private var comment: String = ""
@@ -93,6 +92,7 @@ struct FullTaskInfoView: View {
                             .foregroundStyle(Color.foreground)
                         
                         Text(url.lastPathComponent)
+                            .foregroundStyle(Color.foreground)
                             .lineLimit(1)
                                                 
                         Spacer()
@@ -104,6 +104,7 @@ struct FullTaskInfoView: View {
                             .foregroundColor(Color.foreground)
                         }
                     }
+                    .padding(.horizontal, 5)
                 }
                 
                 if taskStatus == TaskStatus.notStarted {
@@ -129,7 +130,7 @@ struct FullTaskInfoView: View {
                         .padding(.horizontal, 10)
                         .padding(.top, 5)
                         
-                        if !attachedDocuments.isEmpty {
+                        if !viewModel.attachedDocuments.isEmpty {
                             HStack {
                                 Spacer()
                                 
@@ -142,7 +143,7 @@ struct FullTaskInfoView: View {
                                         description: task.description,
                                         deadline: task.deadline,
                                         status: TaskStatus.onCheck,
-                                        files: attachedDocuments.map { $0.absoluteString },
+                                        files: viewModel.attachedDocuments.map { $0.absoluteString },
                                         teachersComment: nil
                                     )
                                     
@@ -287,4 +288,181 @@ struct FullTaskInfoView: View {
         .frame(height: 120)
         .background(Color.background)
     }
+}
+
+#Preview {
+    let testTask = HomeTask(
+        id: "1",
+        subject: "Математика",
+        teacherId: "Преподаватель Иванов",
+        studentId: "Студент Петров",
+        description: "Решить задачи по линейной алгебре: №1-10 из учебника",
+        deadline: Date().addingTimeInterval(86400 * 3), // +3 дня
+        status: .notStarted,
+        files: [],
+        teachersComment: nil
+    )
+    
+    @State var isPresented = true
+    
+    return FullTaskInfoView(
+        isPresented: $isPresented,
+        task: testTask
+    )
+    .previewDisplayName("Стандартный вид")
+}
+
+#Preview("Задача на проверке") {
+    let testTask = HomeTask(
+        id: "2",
+        subject: "Физика",
+        teacherId: "Преподаватель Сидоров",
+        studentId: "Студент Козлов",
+        description: "Лабораторная работа №3 по термодинамике",
+        deadline: Date().addingTimeInterval(-86400), // Вчера
+        status: .onCheck,
+        files: ["file:///doc1.pdf", "file:///doc2.docx"],
+        teachersComment: nil
+    )
+    
+    struct PreviewWrapper: View {
+            @State private var isPresented = true
+            let task: HomeTask
+            
+            var body: some View {
+                FullTaskInfoView(
+                    isPresented: $isPresented,
+                    task: task
+                )
+                .onAppear {
+                    // Для превью можно имитировать загрузку документов
+                    let viewModel = FullTaskInfoViewModel(isPresented: true, task: task)
+                    viewModel.attachedDocuments = [
+                        URL(string: "file:///doc1.pdf")!,
+                        URL(string: "file:///doc2.docx")!
+                    ]
+                }
+            }
+        }
+        
+        return PreviewWrapper(task: testTask)
+
+}
+
+#Preview {
+    // Создаем тестовую задачу
+    let testTask = HomeTask(
+        id: "1",
+        subject: "Математика",
+        teacherId: "Преподаватель Иванов",
+        studentId: "Студент Петров",
+        description: "Решить задачи по линейной алгебре: №1-10 из учебника",
+        deadline: Date().addingTimeInterval(86400 * 3), // +3 дня
+        status: .notStarted,
+        files: [],
+        teachersComment: nil
+    )
+    
+    // Создаем binding для isPresented
+    struct PreviewWrapper: View {
+        @State private var isPresented = true
+        let task: HomeTask
+        
+        var body: some View {
+            FullTaskInfoView(
+                isPresented: $isPresented,
+                task: task
+            )
+        }
+    }
+    
+    return PreviewWrapper(task: testTask)
+}
+
+#Preview("Задача на проверке") {
+    let testTask = HomeTask(
+        id: "2",
+        subject: "Физика",
+        teacherId: "Преподаватель Сидоров",
+        studentId: "Студент Козлов",
+        description: "Лабораторная работа №3 по термодинамике",
+        deadline: Date().addingTimeInterval(-86400), // Вчера
+        status: .onCheck,
+        files: ["doc1.pdf", "doc2.docx"],
+        teachersComment: nil
+    )
+    
+    struct PreviewWrapper: View {
+        @State private var isPresented = true
+        let task: HomeTask
+        
+        var body: some View {
+            FullTaskInfoView(
+                isPresented: $isPresented,
+                task: task
+            )
+        }
+    }
+    
+    return PreviewWrapper(task: testTask)
+}
+
+#Preview("Проверенная задача") {
+    let testTask = HomeTask(
+        id: "3",
+        subject: "Программирование",
+        teacherId: "Преподаватель Петров",
+        studentId: "Студент Иванова",
+        description: "Разработать приложение на SwiftUI",
+        deadline: Date().addingTimeInterval(-86400 * 7), // Неделю назад
+        status: .checked,
+        files: ["project.zip"],
+        teachersComment: "Отличная работа! Есть небольшие замечания по архитектуре."
+    )
+    
+    struct PreviewWrapper: View {
+        @State private var isPresented = true
+        let task: HomeTask
+        
+        var body: some View {
+            FullTaskInfoView(
+                isPresented: $isPresented,
+                task: task
+            )
+        }
+    }
+    
+    return PreviewWrapper(task: testTask)
+}
+
+#Preview("Для преподавателя") {
+    let testTask = HomeTask(
+        id: "4",
+        subject: "Базы данных",
+        teacherId: "Преподаватель Смирнов",
+        studentId: "Студент Кузнецов",
+        description: "Спроектировать схему БД для интернет-магазина",
+        deadline: Date().addingTimeInterval(86400 * 2), // +2 дня
+        status: .onCheck,
+        files: ["database_design.pdf"],
+        teachersComment: nil
+    )
+    
+    struct PreviewWrapper: View {
+        @State private var isPresented = true
+        let task: HomeTask
+        
+        var body: some View {
+            FullTaskInfoView(
+                isPresented: $isPresented,
+                task: task
+            )
+            .onAppear {
+                // Здесь можно установить начальные значения для State переменных
+                // Но лучше переделать саму FullTaskInfoView для приема роли через init
+            }
+        }
+    }
+    
+    return PreviewWrapper(task: testTask)
 }

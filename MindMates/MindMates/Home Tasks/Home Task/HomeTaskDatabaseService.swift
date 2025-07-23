@@ -94,20 +94,50 @@ class HomeTaskDatabaseService {
     
     // Подписка на обновление домашних заданий
     func observeStudentTasks(studentId: String, completion: @escaping (Result<[HomeTask], Error>) -> Void) -> ListenerRegistration {
-            return db.collection(collectionName)
-                .whereField("studentId", isEqualTo: studentId)
-                .order(by: "deadline", descending: false)
-                .addSnapshotListener { snapshot, error in
-                    if let error = error {
-                        completion(.failure(error))
-                        return
-                    }
-                    
-                    let tasks = snapshot?.documents.compactMap { document in
-                        try? document.data(as: HomeTask.self)
-                    } ?? []
-                    
-                    completion(.success(tasks))
+        return db.collection(collectionName)
+            .whereField("studentId", isEqualTo: studentId)
+            .order(by: "deadline", descending: false)
+            .addSnapshotListener { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
                 }
+                    
+                let tasks = snapshot?.documents.compactMap { document in
+                    try? document.data(as: HomeTask.self)
+                } ?? []
+                    
+                completion(.success(tasks))
+            }
+    }
+    
+    // Метод для получения списка задач в зависимости от роли пользователя
+    func fetchTasks(for userId: String, userRole: String, completion: @escaping (Result<[HomeTask], Error>) -> Void) {
+        let query: Query
+        
+        switch userRole {
+        case "student":
+            query = db.collection(collectionName)
+                .whereField("studentId", isEqualTo: userId)
+                .order(by: "deadline", descending: false)
+                
+        default: // case "teacher":
+            query = db.collection(collectionName)
+                .whereField("teacherId", isEqualTo: userId)
+                .order(by: "deadline", descending: false)
         }
+        
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            let tasks = snapshot?.documents.compactMap { document in
+                try? document.data(as: HomeTask.self)
+            } ?? []
+            
+            completion(.success(tasks))
+        }
+    }
 }

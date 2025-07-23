@@ -20,11 +20,7 @@ struct NewTaskView: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    isPresented = false
-                }
+            
             VStack {
                 VStack {
                     Text("Добавить новое домашнее задание")

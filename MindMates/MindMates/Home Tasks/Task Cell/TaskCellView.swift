@@ -74,4 +74,28 @@ struct TaskCellView: View {
     }
 }
 
-
+#Preview("Проверенная задача") {
+    let testTask = HomeTask(
+        id: "3",
+        subject: "Программирование",
+        teacherId: "Преподаватель Петров",
+        studentId: "Студент Иванова",
+        description: "Разработать приложение на SwiftUI",
+        deadline: Date().addingTimeInterval(86400 * 7), 
+        status: .checked,
+        files: ["project.zip"],
+        teachersComment: "Отличная работа! Есть небольшие замечания по архитектуре."
+    )
+    
+    struct PreviewWrapper: View {
+        let task: HomeTask
+        
+        var body: some View {
+            TaskCellView(
+                task: task
+            )
+        }
+    }
+    
+    return PreviewWrapper(task: testTask)
+}
