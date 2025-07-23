@@ -124,8 +124,8 @@ struct PastTaskScreen: View {
 
     private var ClassListView: some View {
         ScrollView {
-            ForEach(completedClasses) { class in
-                ClassCellView(class: `class`)
+            ForEach(completedClasses) { _class in
+                ClassCellView(_class: _class)
                     .padding(.vertical, 8)
             }
         }

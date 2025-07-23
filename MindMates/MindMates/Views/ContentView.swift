@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-// В ContentView.swift
 struct ContentView: View {
     @State private var goToPastTaskScreen = false
     @State private var goToFutureClassScreen = false
 
-    @State private var currentUserRole = "teacher" // или получи из Auth
-    @State private var currentUserId = "user_123"  // или из Firebase
+    @State private var currentUserRole = "teacher"
+    @State private var currentUserId = "teacher_123"
 
     var body: some View {
         NavigationView {
@@ -29,7 +28,8 @@ struct ContentView: View {
                     FutureClassScreen(
                         goToFutureClassScreen: $goToFutureClassScreen,
                         currentUserId: currentUserId,
-                        currentUserRole: currentUserRole
+                        currentUserRole: currentUserRole,
+                        userRole: currentUserRole
                     )
                     .navigationBarHidden(true)
                 } else {
