@@ -8,17 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var goToPastTaskScreen = false
+    @State private var goToFutureClassScreen = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            ZStack {
+                if goToPastTaskScreen {
+                    PastTaskScreen(goToPastTaskScreen: $goToPastTaskScreen)
+                        .navigationBarHidden(true)
+                } else if goToFutureClassScreen {
+                    FutureClassScreen(goToFutureClassScreen: $goToFutureClassScreen)
+                        .navigationBarHidden(true)
+                }else {
+                    ClassesScreen(goToPastTaskScreen: $goToPastTaskScreen, goToFutureClassScreen: $goToFutureClassScreen)
+                        .navigationBarHidden(true)
+                }
+            }
         }
-        .padding()
     }
 }
-
 #Preview {
     ContentView()
 }

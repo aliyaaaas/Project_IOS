@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ClassesScreen: View {
-    let lightColor = Color(red: 242/255, green: 234/255, blue: 201/255)
-    let darkColor = Color(red: 138/255, green: 132/255, blue: 0/255)
+    @Binding var goToPastTaskScreen: Bool
+    @Binding var goToFutureClassScreen: Bool
+    let lightColor = Color(red: 245/255, green: 233/255, blue: 209/255)
+    let darkColor = Color(red: 148/255, green: 144/255, blue: 115/255)
     let accentColor = Color(red: 168/255, green: 158/255, blue: 50/255)
     
     var body: some View {
@@ -18,32 +20,36 @@ struct ClassesScreen: View {
             
             VStack(spacing: 0) {
                 ZStack {
-                    accentColor
+                    darkColor
                         .frame(height: 100)
                         .edgesIgnoringSafeArea(.top)
-                    
-                    Text("Занятия")
-                        .font(.system(size: 24, weight: .bold))
+                    Text("MindMates")
+                        .font(.system(size: 20))
                         .foregroundColor(.white)
-                        .shadow(color: .black, radius: 6, x: 0, y: 0)
-                        .offset(y: 35)
+                        .opacity(Double(0.4))
+                        .offset(y: -30)
+                    
+                    Text("Мои занятия")
+                        .font(.system(size: 40, weight: .bold))
+                        .foregroundColor(darkColor)
+                        .offset(y: 70)
                 }
                 .frame(height: 100)
                 
-                VStack(spacing: 30) {
-                    Spacer().frame(height: 20)
+                VStack(spacing: 50) {
+                    Spacer().frame(height: 70)
                     
                     SectionButton(title: "Ближайшие занятия",
                                 icon: "calendar.badge.clock",
-                                action: {})
+                                action: {goToFutureClassScreen = true})
                     
                     SectionButton(title: "Прошедшие занятия",
                                 icon: "clock.arrow.circlepath",
-                                action: {})
+                                action: {goToPastTaskScreen = true})
                     
                     Spacer()
                 }
-                .padding(.horizontal, 30)
+                .padding(.horizontal, 40)
             }
         }
     }
@@ -79,13 +85,9 @@ struct SectionButton: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
-                    .stroke(darkColor, lineWidth: 1.5)
+                    .stroke(darkColor, lineWidth: 2)
             )
         }
         .buttonStyle(PlainButtonStyle())
     }
-}
-
-#Preview {
-    ClassesScreen()
 }
