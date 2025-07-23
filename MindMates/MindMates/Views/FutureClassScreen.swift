@@ -10,11 +10,25 @@ import SwiftUI
 
 struct FutureClassScreen: View {
     @Binding var goToFutureClassScreen: Bool
-    
+
+    @StateObject var viewModel = ScrollClassesViewModel()
+
+    let currentUserId: String
+    let currentUserRole: String
+
+    init(
+        goToFutureClassScreen: Binding<Bool>,
+        currentUserId: String,
+        currentUserRole: String
+    ) {
+        self._goToFutureClassScreen = goToFutureClassScreen
+        self.currentUserId = currentUserId
+        self.currentUserRole = currentUserRole
+    }
+
     let lightColor = Color(red: 245/255, green: 233/255, blue: 209/255)
     let darkColor = Color(red: 148/255, green: 144/255, blue: 115/255)
-    let accentColor = Color(red: 168/255, green: 158/255, blue: 50/255)
-    
+
     var body: some View {
         ZStack {
             lightColor.edgesIgnoringSafeArea(.all)
@@ -54,24 +68,66 @@ struct FutureClassScreen: View {
                 }
                 .frame(height: 100)
 
-                VStack(spacing: 50) {
-                    Spacer().frame(height: 70)
-
-                    Text("Тут будут будущие занятия")
-                        .font(.title2)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.white)
-                        .cornerRadius(15)
-                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 15)
-                                .stroke(darkColor, lineWidth: 2)
-                        )
-
-                    Spacer()
+                // Список предстоящих занятий
+                ZStack {
+                    if currentClasses.isEmpty && !viewModel.isLoading {
+                        EmptyStateView
+                    } else {
+                        ClassListView
+                    }
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .tint(darkColor)
+                            .scaleEffect(1.5)
+                    }
                 }
                 .padding(.horizontal, 40)
+                .padding(.top, 30)
+
+                Spacer()
+            }
+        }
+        .onAppear {
+            viewModel.fetchClasses(userId: currentUserId, userRole: currentUserRole)
+        }
+        .alert("Ошибка", isPresented: $viewModel.showErrorAlert) {
+            Button("Повторить") {
+                viewModel.fetchClasses(userId: currentUserId, userRole: currentUserRole)
+            }
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(viewModel.errorMessage)
+        }
+    }
+
+    private var currentClasses: [ClassModel] {
+        viewModel.classes.filter { $0.status == .upcoming }
+    }
+
+    private var EmptyStateView: some View {
+        VStack {
+            Image(systemName: "calendar.badge.clock")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .foregroundColor(darkColor)
+                .padding(8)
+                .background(Color.white)
+                .clipShape(Circle())
+            
+            Text("Занятий пока нет")
+                .font(.title2)
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+    }
+
+    private var ClassListView: some View {
+        ScrollView {
+            ForEach(currentClasses) { class in
+                ClassCellView(class: `class`)
+                    .padding(.vertical, 8)
             }
         }
     }
