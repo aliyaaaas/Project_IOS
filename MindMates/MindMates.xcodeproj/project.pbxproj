@@ -12,19 +12,39 @@
 		04947CB52E2BA04800ED472E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 04947CB42E2BA04800ED472E /* FirebaseCore */; };
 		04947CB72E2BA04800ED472E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 04947CB62E2BA04800ED472E /* FirebaseFirestore */; };
 		04947CB92E2BA04800ED472E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 04947CB82E2BA04800ED472E /* FirebaseStorage */; };
+		870562662E32352000E59026 /* SingInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870562612E32352000E59026 /* SingInView.swift */; };
+		8705626D2E32357E00E59026 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8705626C2E32357900E59026 /* AppDelegate.swift */; };
+		8705626E2E3235C000E59026 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8705626B2E32355F00E59026 /* AuthViewModel.swift */; };
+		870562712E32373600E59026 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870562702E32373100E59026 /* SignUpView.swift */; };
+		870562742E32389800E59026 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870562732E32389700E59026 /* AuthView.swift */; };
+		870562772E32394400E59026 /* CShape1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870562762E32391700E59026 /* CShape1.swift */; };
+		870562792E323F0E00E59026 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 870562782E323F0E00E59026 /* GoogleService-Info.plist */; };
+		8705627F2E32622B00E59026 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8705627A2E32622B00E59026 /* Preview Assets.xcassets */; };
+		870562802E32622B00E59026 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8705627C2E32622B00E59026 /* ProfileScreen.swift */; };
+		870562832E32649B00E59026 /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870562822E32649900E59026 /* FirebaseStorage.swift */; };
+		975F2E142E3121A900E10838 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F2E0C2E3121A900E10838 /* App.swift */; };
+		975F2E1B2E3121A900E10838 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975F2E0E2E3121A900E10838 /* Assets.xcassets */; };
+		9782212C2E329051008B4BD8 /* ProfileScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9782212B2E329051008B4BD8 /* ProfileScreenViewModel.swift */; };
+		9782212F2E329CC9008B4BD8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9782212E2E329CC9008B4BD8 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04947C9C2E2B9F0000ED472E /* MindMates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindMates.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		870562612E32352000E59026 /* SingInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingInView.swift; sourceTree = "<group>"; };
+		8705626B2E32355F00E59026 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		8705626C2E32357900E59026 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		870562702E32373100E59026 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		870562732E32389700E59026 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		870562762E32391700E59026 /* CShape1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CShape1.swift; sourceTree = "<group>"; };
+		870562782E323F0E00E59026 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8705627A2E32622B00E59026 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8705627C2E32622B00E59026 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		870562822E32649900E59026 /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
+		971250492E312F96001DDD19 /* MindMates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindMates.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		975F2E0C2E3121A900E10838 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		975F2E0E2E3121A900E10838 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9782212B2E329051008B4BD8 /* ProfileScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenViewModel.swift; sourceTree = "<group>"; };
+		9782212E2E329CC9008B4BD8 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		04947C9E2E2B9F0000ED472E /* MindMates */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MindMates;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		04947C992E2B9F0000ED472E /* Frameworks */ = {
@@ -45,17 +65,86 @@
 		04947C932E2B9F0000ED472E = {
 			isa = PBXGroup;
 			children = (
-				04947C9E2E2B9F0000ED472E /* MindMates */,
-				04947C9D2E2B9F0000ED472E /* Products */,
+				870562782E323F0E00E59026 /* GoogleService-Info.plist */,
+				8705627A2E32622B00E59026 /* Preview Assets.xcassets */,
+				975F2E0E2E3121A900E10838 /* Assets.xcassets */,
+				975F2E0C2E3121A900E10838 /* App.swift */,
+				870562752E32391300E59026 /* Views */,
+				8705626A2E32355300E59026 /* Core */,
+				971250802E313717001DDD19 /* Module */,
+				971250492E312F96001DDD19 /* MindMates.app */,
 			);
 			sourceTree = "<group>";
 		};
-		04947C9D2E2B9F0000ED472E /* Products */ = {
+		8705626A2E32355300E59026 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				04947C9C2E2B9F0000ED472E /* MindMates.app */,
+				870562822E32649900E59026 /* FirebaseStorage.swift */,
+				8705626C2E32357900E59026 /* AppDelegate.swift */,
+				8705626B2E32355F00E59026 /* AuthViewModel.swift */,
 			);
-			name = Products;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		8705626F2E32372000E59026 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				870562702E32373100E59026 /* SignUpView.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		870562722E32389100E59026 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				870562732E32389700E59026 /* AuthView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		870562752E32391300E59026 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				870562762E32391700E59026 /* CShape1.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		971250802E313717001DDD19 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				9782212D2E329CB7008B4BD8 /* Settings */,
+				870562722E32389100E59026 /* Auth */,
+				8705626F2E32372000E59026 /* SignUp */,
+				971250822E313731001DDD19 /* ProfileScreen */,
+				971250812E313724001DDD19 /* SignIn */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		971250812E313724001DDD19 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				870562612E32352000E59026 /* SingInView.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		971250822E313731001DDD19 /* ProfileScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8705627C2E32622B00E59026 /* ProfileScreen.swift */,
+				9782212B2E329051008B4BD8 /* ProfileScreenViewModel.swift */,
+			);
+			path = ProfileScreen;
+			sourceTree = "<group>";
+		};
+		9782212D2E329CB7008B4BD8 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9782212E2E329CC9008B4BD8 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -73,9 +162,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				04947C9E2E2B9F0000ED472E /* MindMates */,
-			);
 			name = MindMates;
 			packageProductDependencies = (
 				04947CB02E2BA04800ED472E /* FirebaseAnalytics */,
@@ -85,7 +171,7 @@
 				04947CB82E2BA04800ED472E /* FirebaseStorage */,
 			);
 			productName = MindMates;
-			productReference = 04947C9C2E2B9F0000ED472E /* MindMates.app */;
+			productReference = 971250492E312F96001DDD19 /* MindMates.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -116,7 +202,7 @@
 				04947CAF2E2BA04800ED472E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 04947C9D2E2B9F0000ED472E /* Products */;
+			productRefGroup = 04947C932E2B9F0000ED472E;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -130,6 +216,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				975F2E1B2E3121A900E10838 /* Assets.xcassets in Resources */,
+				8705627F2E32622B00E59026 /* Preview Assets.xcassets in Resources */,
+				870562792E323F0E00E59026 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +229,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870562832E32649B00E59026 /* FirebaseStorage.swift in Sources */,
+				8705626D2E32357E00E59026 /* AppDelegate.swift in Sources */,
+				9782212C2E329051008B4BD8 /* ProfileScreenViewModel.swift in Sources */,
+				870562802E32622B00E59026 /* ProfileScreen.swift in Sources */,
+				870562772E32394400E59026 /* CShape1.swift in Sources */,
+				8705626E2E3235C000E59026 /* AuthViewModel.swift in Sources */,
+				870562712E32373600E59026 /* SignUpView.swift in Sources */,
+				870562662E32352000E59026 /* SingInView.swift in Sources */,
+				975F2E142E3121A900E10838 /* App.swift in Sources */,
+				870562742E32389800E59026 /* AuthView.swift in Sources */,
+				9782212F2E329CC9008B4BD8 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +372,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MindMates/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"\"";
 				DEVELOPMENT_TEAM = 855A8WYUB7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -281,7 +381,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,7 +406,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MindMates/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"\"";
 				DEVELOPMENT_TEAM = 855A8WYUB7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -315,7 +415,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
