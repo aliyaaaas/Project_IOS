@@ -4,6 +4,7 @@
 //
 //  Created by Азалина Файзуллина on 23.07.2025.
 //
+
 import FirebaseAuth
 
 class AuthService: ObservableObject {

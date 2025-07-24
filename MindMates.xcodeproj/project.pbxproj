@@ -25,7 +25,6 @@
 		04AA3FDC2E32BA260016ACF9 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FB32E32BA260016ACF9 /* SignUpView.swift */; };
 		04AA3FDD2E32BA260016ACF9 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FAC2E32BA260016ACF9 /* ProfileScreen.swift */; };
 		04AA3FDE2E32BA260016ACF9 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FAA2E32BA260016ACF9 /* AuthView.swift */; };
-		04AA3FDF2E32BA260016ACF9 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FCB2E32BA260016ACF9 /* AuthService.swift */; };
 		04AA3FE02E32BA260016ACF9 /* CShape1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FC12E32BA260016ACF9 /* CShape1.swift */; };
 		04AA3FE12E32BA260016ACF9 /* HomeTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3F9A2E32BA260016ACF9 /* HomeTask.swift */; };
 		04AA3FE22E32BA260016ACF9 /* TaskCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FA52E32BA260016ACF9 /* TaskCellView.swift */; };
@@ -55,7 +54,6 @@
 		04AA3FFA2E32BA260016ACF9 /* ClassCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FBC2E32BA260016ACF9 /* ClassCellView.swift */; };
 		04AA3FFB2E32BA260016ACF9 /* FullClassInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FC22E32BA260016ACF9 /* FullClassInfoView.swift */; };
 		04AA3FFC2E32BA260016ACF9 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FC82E32BA260016ACF9 /* App.swift */; };
-		04AA3FFD2E32BA260016ACF9 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA3FA82E32BA260016ACF9 /* AppState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,7 +72,6 @@
 		04AA3FA22E32BA260016ACF9 /* ScrollTasksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTasksViewModel.swift; sourceTree = "<group>"; };
 		04AA3FA32E32BA260016ACF9 /* TwoTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoTabsView.swift; sourceTree = "<group>"; };
 		04AA3FA52E32BA260016ACF9 /* TaskCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellView.swift; sourceTree = "<group>"; };
-		04AA3FA82E32BA260016ACF9 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		04AA3FAA2E32BA260016ACF9 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		04AA3FAC2E32BA260016ACF9 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		04AA3FAD2E32BA260016ACF9 /* ProfileScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenViewModel.swift; sourceTree = "<group>"; };
@@ -98,7 +95,6 @@
 		04AA3FC82E32BA260016ACF9 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		04AA3FC92E32BA260016ACF9 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		04AA3FCA2E32BA260016ACF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		04AA3FCB2E32BA260016ACF9 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		04AA3FCC2E32BA260016ACF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04AA3FCD2E32BA260016ACF9 /* LoginScreen */ = {isa = PBXFileReference; lastKnownFileType = text; path = LoginScreen; sourceTree = "<group>"; };
 		04AA3FCE2E32BA260016ACF9 /* MindMates.xcodeproj.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = MindMates.xcodeproj.zip; sourceTree = "<group>"; };
@@ -202,7 +198,7 @@
 		04AA3FA92E32BA260016ACF9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				04AA3FA82E32BA260016ACF9 /* AppState.swift */,
+				04AA3FC92E32BA260016ACF9 /* AppState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -314,9 +310,7 @@
 				04AA3FBB2E32BA260016ACF9 /* TabView */,
 				04AA3FC72E32BA260016ACF9 /* Views */,
 				04AA3FC82E32BA260016ACF9 /* App.swift */,
-				04AA3FC92E32BA260016ACF9 /* AppState.swift */,
 				04AA3FCA2E32BA260016ACF9 /* Assets.xcassets */,
-				04AA3FCB2E32BA260016ACF9 /* AuthService.swift */,
 				04AA3FCC2E32BA260016ACF9 /* GoogleService-Info.plist */,
 				04AA3FCD2E32BA260016ACF9 /* LoginScreen */,
 				04AA3FCE2E32BA260016ACF9 /* MindMates.xcodeproj.zip */,
@@ -425,7 +419,6 @@
 				04AA3FDC2E32BA260016ACF9 /* SignUpView.swift in Sources */,
 				04AA3FDD2E32BA260016ACF9 /* ProfileScreen.swift in Sources */,
 				04AA3FDE2E32BA260016ACF9 /* AuthView.swift in Sources */,
-				04AA3FDF2E32BA260016ACF9 /* AuthService.swift in Sources */,
 				04AA3FE02E32BA260016ACF9 /* CShape1.swift in Sources */,
 				04AA3FE12E32BA260016ACF9 /* HomeTask.swift in Sources */,
 				04AA3FE22E32BA260016ACF9 /* TaskCellView.swift in Sources */,
@@ -455,7 +448,6 @@
 				04AA3FFA2E32BA260016ACF9 /* ClassCellView.swift in Sources */,
 				04AA3FFB2E32BA260016ACF9 /* FullClassInfoView.swift in Sources */,
 				04AA3FFC2E32BA260016ACF9 /* App.swift in Sources */,
-				04AA3FFD2E32BA260016ACF9 /* AppState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
