@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab: Tab = .profile
+    @StateObject private var profileViewModel = ProfileViewModel()
     
     let lightColor = Color(red: 245/255, green: 233/255, blue: 209/255)
     let darkColor = Color(red: 148/255, green: 144/255, blue: 115/255)
@@ -25,19 +26,22 @@ struct MainTabView: View {
     var body: some View {
         ZStack {
             TabView(selection: $selectedTab) {
-                Text("Занятия") /* Поменять на View раздела занятий */
+                ClassesScreen(goToPastTaskScreen: .constant(false), goToFutureClassScreen: .constant(false))
                     .tag(Tab.lessons)
                     .tabItem {
                         Label("", systemImage: Tab.lessons.rawValue)
                     }
                 
-                Text("Задания") /* Поменять на View раздела заданий */
+                TwoTabsView(
+                    currentUserRole: profileViewModel.role ?? .student,
+                    currentUserId: profileViewModel.uid ?? "default_user_id"
+                )
                     .tag(Tab.tasks)
                     .tabItem {
                         Label("", systemImage: Tab.tasks.rawValue)
                     }
                 
-                Text("Профиль") /* Поменять на View профиля */
+                ProfileScreen()
                     .tag(Tab.profile)
                     .tabItem {
                         Label("", systemImage: Tab.profile.rawValue)

@@ -10,26 +10,33 @@ import SwiftUI
 @main
 struct MindMatesApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
-    @StateObject private var authViewModel = AuthViewModel()
+    private let authViewModel = AuthViewModel() // Не используем @StateObject здесь
 
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                if authViewModel.isAuthenticated {
-                    TabView {
-                        ProfileScreen()
-                            .tabItem { Text("Профиль") }
-                    }
-                    
-                } else {
-                    AuthView()
-                }
+                MainContentView()
+                    .environmentObject(authViewModel) // Переносим сюда
             }
         }
-        .environmentObject(authViewModel)
     }
 }
+
+struct MainContentView: View {
+    @EnvironmentObject private var authViewModel: AuthViewModel
+    
+    var body: some View {
+        if authViewModel.isAuthenticated {
+            TabView {
+                ProfileScreen()
+                    .tabItem { Text("Профиль") }
+            }
+        } else {
+            AuthView()
+        }
+    }
+}
+
 
 // План.
 // 1. Сверстать экран настроек

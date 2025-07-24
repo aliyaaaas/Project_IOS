@@ -10,12 +10,11 @@ import SwiftUI
 struct ArchiveTasksView: View {
     @StateObject var viewModel = ScrollTasksViewModel()
     let currentUserId: String
-    let currentUserRole: String
+    let currentUserRole: Role
     
-    init(currentUserId: String, currentUserRole: String, viewModel: ScrollTasksViewModel = ScrollTasksViewModel()) {
+    init(currentUserId: String, currentUserRole: Role) {
         self.currentUserId = currentUserId
         self.currentUserRole = currentUserRole
-        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     private var filteredTasks: [HomeTask] {
@@ -45,6 +44,9 @@ struct ArchiveTasksView: View {
         } message: {
             Text(viewModel.errorMessage)
         }
+        .onAppear {
+            viewModel.fetchTasks(userId: currentUserId, userRole: currentUserRole)
+        }
     }
     
     private var EmptyStateView: some View {
@@ -73,126 +75,126 @@ struct ArchiveTasksView: View {
     }
 }
 
-#Preview("Преподаватель с задачами") {
-    let mockTasks = [
-        HomeTask(
-            id: "1",
-            subject: "Математика",
-            teacherId: "teacher1",
-            studentId: "student1",
-            description: "Решить задачи 1-10",
-            deadline: Date().addingTimeInterval(86400),
-            status: .notStarted,
-            files: nil,
-            teachersComment: nil
-        ),
-        HomeTask(
-            id: "2",
-            subject: "Физика",
-            teacherId: "teacher2",
-            studentId: "student1",
-            description: "Лабораторная работа",
-            deadline: Date().addingTimeInterval(172800),
-            status: .checked,
-            files: ["doc1.pdf"],
-            teachersComment: "Отлично!"
-        ),
-        HomeTask(
-            id: "3",
-            subject: "Химия",
-            teacherId: "teacher1",
-            studentId: "student2",
-            description: "Подготовить отчет",
-            deadline: Date().addingTimeInterval(259200),
-            status: .onCheck,
-            files: ["report.docx"],
-            teachersComment: nil
-        )
-    ]
-    
-    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
-    
-    return TwoTabsView(
-        userRole: "teacher",
-        currentUserRole: "teacher",
-        currentUserId: "teacher_123"
-    )
-    .environmentObject(mockVM)
-}
-
-#Preview("Преподаватель с архивными задачами") {
-    let mockTasks = [
-        HomeTask(
-            id: "1",
-            subject: "Математика",
-            teacherId: "teacher1",
-            studentId: "student1",
-            description: "Решить задачи 1-10",
-            deadline: Date().addingTimeInterval(86400),
-            status: .checked, // Важно: только завершенные задачи для архива
-            files: nil,
-            teachersComment: "Хорошая работа"
-        ),
-        HomeTask(
-            id: "2",
-            subject: "Физика",
-            teacherId: "teacher2",
-            studentId: "student1",
-            description: "Лабораторная работа",
-            deadline: Date().addingTimeInterval(172800),
-            status: .checked, // Важно: только завершенные задачи для архива
-            files: ["doc1.pdf"],
-            teachersComment: "Отлично!"
-        )
-    ]
-    
-    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
-    
-    return ArchiveTasksView(
-        currentUserId: "teacher_123",
-        currentUserRole: "teacher",
-        viewModel: mockVM
-    )
-}
-
-#Preview("Студент с архивными задачами") {
-    let mockTasks = [
-        HomeTask(
-            id: "3",
-            subject: "История",
-            teacherId: "teacher3",
-            studentId: "student_456",
-            description: "Написать эссе",
-            deadline: Date().addingTimeInterval(259200),
-            status: .checked, // Важно: только завершенные задачи для архива
-            files: ["essay.pdf"],
-            teachersComment: "Принято"
-        )
-    ]
-    
-    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
-    
-    return ArchiveTasksView(
-        currentUserId: "student_456",
-        currentUserRole: "student",
-        viewModel: mockVM
-    )
-}
-
-#Preview("Пустой архив") {
-    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: false)
-    return ArchiveTasksView(
-        currentUserId: "teacher_123",
-        currentUserRole: "teacher",
-        viewModel: mockVM
-    )
-}
-
-#Preview("Загрузка архива") {
-    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: true)
-    return ArchiveTasksView(
-        currentUserId: "student_456",
-        currentUserRole: "student",
-        viewModel: mockVM
-    )
-}
+//#Preview("Преподаватель с задачами") {
+//    let mockTasks = [
+//        HomeTask(
+//            id: "1",
+//            subject: "Математика",
+//            teacherId: "teacher1",
+//            studentId: "student1",
+//            description: "Решить задачи 1-10",
+//            deadline: Date().addingTimeInterval(86400),
+//            status: .notStarted,
+//            files: nil,
+//            teachersComment: nil
+//        ),
+//        HomeTask(
+//            id: "2",
+//            subject: "Физика",
+//            teacherId: "teacher2",
+//            studentId: "student1",
+//            description: "Лабораторная работа",
+//            deadline: Date().addingTimeInterval(172800),
+//            status: .checked,
+//            files: ["doc1.pdf"],
+//            teachersComment: "Отлично!"
+//        ),
+//        HomeTask(
+//            id: "3",
+//            subject: "Химия",
+//            teacherId: "teacher1",
+//            studentId: "student2",
+//            description: "Подготовить отчет",
+//            deadline: Date().addingTimeInterval(259200),
+//            status: .onCheck,
+//            files: ["report.docx"],
+//            teachersComment: nil
+//        )
+//    ]
+//    
+//    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
+//    
+//    return TwoTabsView(
+//        userRole: Role.teacher,
+//        currentUserRole: "teacher",
+//        currentUserId: "teacher_123"
+//    )
+//    .environmentObject(mockVM)
+//}
+//
+//#Preview("Преподаватель с архивными задачами") {
+//    let mockTasks = [
+//        HomeTask(
+//            id: "1",
+//            subject: "Математика",
+//            teacherId: "teacher1",
+//            studentId: "student1",
+//            description: "Решить задачи 1-10",
+//            deadline: Date().addingTimeInterval(86400),
+//            status: .checked, // Важно: только завершенные задачи для архива
+//            files: nil,
+//            teachersComment: "Хорошая работа"
+//        ),
+//        HomeTask(
+//            id: "2",
+//            subject: "Физика",
+//            teacherId: "teacher2",
+//            studentId: "student1",
+//            description: "Лабораторная работа",
+//            deadline: Date().addingTimeInterval(172800),
+//            status: .checked, // Важно: только завершенные задачи для архива
+//            files: ["doc1.pdf"],
+//            teachersComment: "Отлично!"
+//        )
+//    ]
+//    
+//    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
+//    
+//    return ArchiveTasksView(
+//        currentUserId: "teacher_123",
+//        currentUserRole: Role.teacher,
+//        viewModel: mockVM
+//    )
+//}
+//
+//#Preview("Студент с архивными задачами") {
+//    let mockTasks = [
+//        HomeTask(
+//            id: "3",
+//            subject: "История",
+//            teacherId: "teacher3",
+//            studentId: "student_456",
+//            description: "Написать эссе",
+//            deadline: Date().addingTimeInterval(259200),
+//            status: .checked, // Важно: только завершенные задачи для архива
+//            files: ["essay.pdf"],
+//            teachersComment: "Принято"
+//        )
+//    ]
+//    
+//    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
+//    
+//    return ArchiveTasksView(
+//        currentUserId: "student_456",
+//        currentUserRole: Role.student,
+//        viewModel: mockVM
+//    )
+//}
+//
+//#Preview("Пустой архив") {
+//    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: false)
+//    return ArchiveTasksView(
+//        currentUserId: "teacher_123",
+//        currentUserRole: Role.teacher,
+//        viewModel: mockVM
+//    )
+//}
+//
+//#Preview("Загрузка архива") {
+//    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: true)
+//    return ArchiveTasksView(
+//        currentUserId: "student_456",
+//        currentUserRole: Role.student,
+//        viewModel: mockVM
+//    )
+//}

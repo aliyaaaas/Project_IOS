@@ -10,9 +10,9 @@ import SwiftUI
 struct CurrentTasksView: View {
     @EnvironmentObject var viewModel: ScrollTasksViewModel
     let currentUserId: String
-    let currentUserRole: String
+    let currentUserRole: Role
     
-    init(currentUserId: String, currentUserRole: String) {
+    init(currentUserId: String, currentUserRole: Role) {
         self.currentUserId = currentUserId
         self.currentUserRole = currentUserRole
     }
@@ -45,8 +45,8 @@ struct CurrentTasksView: View {
             Text(viewModel.errorMessage)
         }
         .onAppear {
-                    viewModel.fetchTasks(userId: currentUserId, userRole: currentUserRole)
-                }
+            viewModel.fetchTasks(userId: currentUserId, userRole: currentUserRole)
+        }
     }
     
     private var EmptyStateView: some View {
@@ -75,46 +75,46 @@ struct CurrentTasksView: View {
     }
 }
 
-#Preview("С задачами") {
-    let mockTasks = [
-        HomeTask(
-            id: "1",
-            subject: "Математика",
-            teacherId: "teacher1",
-            studentId: "student1",
-            description: "Решить задачи 1-10",
-            deadline: Date().addingTimeInterval(86400),
-            status: .notStarted,
-            files: nil,
-            teachersComment: nil
-        ),
-        HomeTask(
-            id: "2",
-            subject: "Физика",
-            teacherId: "teacher2",
-            studentId: "student1",
-            description: "Лабораторная работа",
-            deadline: Date().addingTimeInterval(172800),
-            status: .onCheck,
-            files: ["doc1.pdf"],
-            teachersComment: nil
-        )
-    ]
-    
-    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
-    
-    return CurrentTasksView(currentUserId: "user123", currentUserRole: "student")
-        .environmentObject(mockVM)
-}
-
-#Preview("Пустой список") {
-    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: false)
-    return CurrentTasksView(currentUserId: "user123", currentUserRole: "student")
-        .environmentObject(mockVM)
-}
-
-#Preview("Загрузка") {
-    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: true)
-    return CurrentTasksView(currentUserId: "user123", currentUserRole: "student")
-        .environmentObject(mockVM)
-}
+//#Preview("С задачами") {
+//    let mockTasks = [
+//        HomeTask(
+//            id: "1",
+//            subject: "Математика",
+//            teacherId: "teacher1",
+//            studentId: "student1",
+//            description: "Решить задачи 1-10",
+//            deadline: Date().addingTimeInterval(86400),
+//            status: .notStarted,
+//            files: nil,
+//            teachersComment: nil
+//        ),
+//        HomeTask(
+//            id: "2",
+//            subject: "Физика",
+//            teacherId: "teacher2",
+//            studentId: "student1",
+//            description: "Лабораторная работа",
+//            deadline: Date().addingTimeInterval(172800),
+//            status: .onCheck,
+//            files: ["doc1.pdf"],
+//            teachersComment: nil
+//        )
+//    ]
+//    
+//    let mockVM = ScrollTasksViewModel(mockTasks: mockTasks, isLoading: false)
+//    
+//    return CurrentTasksView(currentUserId: "user123", currentUserRole: "student")
+//        .environmentObject(mockVM)
+//}
+//
+//#Preview("Пустой список") {
+//    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: false)
+//    return CurrentTasksView(currentUserId: "user123", currentUserRole: "student")
+//        .environmentObject(mockVM)
+//}
+//
+//#Preview("Загрузка") {
+//    let mockVM = ScrollTasksViewModel(mockTasks: [], isLoading: true)
+//    return CurrentTasksView(currentUserId: "user123", currentUserRole: "student")
+//        .environmentObject(mockVM)
+//}

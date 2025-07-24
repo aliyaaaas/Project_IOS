@@ -25,11 +25,11 @@ class ScrollTasksViewModel : ObservableObject {
             self.isMockMode = !mockTasks.isEmpty
         }
 
-        func fetchTasks(userId: String, userRole: String) {
+        func fetchTasks(userId: String, userRole: Role) {
             guard !isMockMode else { return }
             
             isLoading = true
-            databaseService.fetchTasks(for: userId, userRole: userRole) { [weak self] result in
+            databaseService.fetchTasks(for: userId, userRole: userRole.rawValue) { [weak self] result in
                 DispatchQueue.main.async {
                     self?.isLoading = false
                     switch result {

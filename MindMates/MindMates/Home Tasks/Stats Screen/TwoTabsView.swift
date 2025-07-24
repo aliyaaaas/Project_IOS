@@ -9,21 +9,17 @@ import SwiftUI
 
 struct TwoTabsView: View {
     @StateObject var viewModel = ScrollTasksViewModel()
-    
     @State private var selectedTab = 0
     @Namespace private var animationNamespace
-    @State var userRole: String
     @State private var showNewTask = false
-    
-    @State private var currentUserRole : String
-    @State private var currentUserId : String
+       
+    let currentUserRole: Role
+    let currentUserId: String
 
-    init(userRole: String = "teacher", currentUserRole: String, currentUserId: String, viewModel: ScrollTasksViewModel = ScrollTasksViewModel()) {
-        self._userRole = State(initialValue: userRole) // тут надо получать роль юзера
-        self._currentUserId = State(initialValue: currentUserId)
-        self._currentUserRole = State(initialValue: currentUserRole)
+    init(currentUserRole: Role, currentUserId: String, viewModel: ScrollTasksViewModel = ScrollTasksViewModel()) {
+        self.currentUserRole = currentUserRole
+        self.currentUserId = currentUserId
         self._viewModel = StateObject(wrappedValue: viewModel)
-
     }
     
     var body: some View {
@@ -46,7 +42,7 @@ struct TwoTabsView: View {
     
     var ButtonView: some View {
         Group {
-            if userRole == "teacher" {
+            if currentUserRole == .teacher {
                 Button {
                     showNewTask = true
                 } label: {
@@ -123,51 +119,22 @@ struct TwoTabsView_Previews: PreviewProvider {
         Group {
             // Преподаватель
             TwoTabsView(
-                userRole: "teacher",
-                currentUserRole: "teacher",
-                currentUserId: "teacher_123",
-                viewModel: ScrollTasksViewModel(mockTasks: [], isLoading: false)
+                currentUserRole: .teacher,
+                currentUserId: "teacher_123"
             )
             .previewDisplayName("Преподаватель (пустой)")
             
             // Студент
             TwoTabsView(
-                userRole: "student",
-                currentUserRole: "student",
-                currentUserId: "student_456",
-                viewModel: ScrollTasksViewModel(mockTasks: [], isLoading: false)
+                currentUserRole: .student,
+                currentUserId: "student_456"
             )
             .previewDisplayName("Студент (пустой)")
             
             // С задачами
             TwoTabsView(
-                userRole: "teacher",
-                currentUserRole: "teacher",
-                currentUserId: "teacher_123",
-                viewModel: ScrollTasksViewModel(mockTasks: [
-                    HomeTask(
-                        id: "1",
-                        subject: "Математика",
-                        teacherId: "teacher1",
-                        studentId: "student1",
-                        description: "Решить задачи 1-10",
-                        deadline: Date().addingTimeInterval(86400),
-                        status: .notStarted,
-                        files: nil,
-                        teachersComment: nil
-                    ),
-                    HomeTask(
-                        id: "2",
-                        subject: "Физика",
-                        teacherId: "teacher2",
-                        studentId: "student1",
-                        description: "Лабораторная работа",
-                        deadline: Date().addingTimeInterval(172800),
-                        status: .checked,
-                        files: ["doc1.pdf"],
-                        teachersComment: "Отлично!"
-                    )
-                ], isLoading: false)
+                currentUserRole: .teacher,
+                currentUserId: "teacher_123"
             )
             .previewDisplayName("С задачами")
         }

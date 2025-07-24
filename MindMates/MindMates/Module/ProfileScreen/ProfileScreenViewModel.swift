@@ -20,7 +20,7 @@ class ProfileViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var role: Role?
     
-    private var uid: String? {
+    var uid: String? {
         Auth.auth().currentUser?.uid
     }
 

@@ -7,79 +7,48 @@
 
 import Foundation
 
-// 1. Добавляем протокол для сервиса
 protocol HomeTaskDatabaseServiceProtocol {
     func updateTask(_ task: HomeTask, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
-// 2. Делаем ваш сервис соответствующим протоколу
 extension HomeTaskDatabaseService: HomeTaskDatabaseServiceProtocol {}
 
 class FullTaskInfoViewModel: ObservableObject {
-    @Published var isPresented: Bool
     @Published var task: HomeTask
-    @Published var taskStatus: TaskStatus
     @Published var attachedDocuments: [URL] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     
     private let taskService: HomeTaskDatabaseServiceProtocol
     
-    // 3. Исправляем инициализатор
-    init(isPresented: Bool,
-         task: HomeTask,
-         taskService: HomeTaskDatabaseServiceProtocol = HomeTaskDatabaseService()) {
-        self.isPresented = isPresented
+    init(task: HomeTask, taskService: HomeTaskDatabaseServiceProtocol = HomeTaskDatabaseService()) {
         self.task = task
-        self.taskStatus = task.status
         self.taskService = taskService
         self.loadAttachedDocuments()
     }
     
     private func loadAttachedDocuments() {
-        // 4. Безопасно разворачиваем task.files
-        guard let files = task.files else { return }
-        self.attachedDocuments = files.compactMap {
-            guard let url = URL(string: $0) else {
-                print("Invalid URL string: \($0)")
-                return nil
-            }
-            return url
-        }
+        attachedDocuments = task.files?.compactMap { URL(string: $0) } ?? []
     }
     
-    func sendTask(updatedTask: HomeTask) {
+    func sendTask(updatedTask: HomeTask, completion: @escaping (Bool) -> Void) {
         isLoading = true
         errorMessage = nil
         
-        // 5. Явно указываем тип результата
-        taskService.updateTask(updatedTask) { [weak self] (result: Result<Void, Error>) in
+        taskService.updateTask(updatedTask) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 
                 switch result {
                 case .success:
-                    self?.isPresented = false
                     self?.task = updatedTask
-                    self?.taskStatus = updatedTask.status
-                    // 6. Безопасно разворачиваем files
-                    if let files = updatedTask.files {
-                        self?.attachedDocuments = files.compactMap(URL.init)
-                    }
-                    
+                    self?.loadAttachedDocuments()
+                    completion(true)
                 case .failure(let error):
-                    self?.errorMessage = "Ошибка при отправке задания: \(error.localizedDescription)"
-                    print(self?.errorMessage ?? "")
+                    self?.errorMessage = "Ошибка: \(error.localizedDescription)"
+                    completion(false)
                 }
             }
         }
-    }
-    
-    func addDocument(_ url: URL) {
-        attachedDocuments.append(url)
-    }
-    
-    func removeDocument(at index: Int) {
-        attachedDocuments.remove(at: index)
     }
 }

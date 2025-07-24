@@ -6,27 +6,42 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct FullTaskInfoView: View {
     @Binding var isPresented: Bool
-    
     let task: HomeTask
-    @State var taskStatus: TaskStatus
-    
-    @State var userRole: String
-    
+    @State private var taskStatus: TaskStatus
+    @State private var userRole: Role?
     @StateObject private var viewModel: FullTaskInfoViewModel
-    
     @State private var showDocumentPicker = false
-    
     @State private var comment: String = ""
-    
+        
     init(isPresented: Binding<Bool>, task: HomeTask) {
         self._isPresented = isPresented
         self.task = task
         self._taskStatus = State(initialValue: task.status)
-        self._userRole = State(initialValue: "teacher") // тут надо получать роль юзера
-        self._viewModel = StateObject(wrappedValue: FullTaskInfoViewModel(isPresented: isPresented.wrappedValue, task: task))
+        self._viewModel = StateObject(wrappedValue: FullTaskInfoViewModel(task: task))
+    }
+        
+    var body: some View {
+        ZStack {
+            backgroundView
+            
+            mainContentView
+        }
+        .task {
+            await loadUserRole()
+        }
+    }
+    
+    private func loadUserRole() async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        do {
+            userRole = try await FirebaseStorage.shared.getUserRole(uid: uid)
+        } catch {
+            print("Ошибка загрузки роли: \(error)")
+        }
     }
     
     private var formattedDeadline: String {
@@ -35,14 +50,6 @@ struct FullTaskInfoView: View {
             formatter.dateFormat = "dd MMM yyyy"
             return formatter.string(from: task.deadline)
         }
-
-    var body: some View {
-        ZStack {
-            backgroundView
-            
-            mainContentView
-        }
-    }
     
     private var backgroundView: some View {
         Color.black.opacity(0)
@@ -147,7 +154,11 @@ struct FullTaskInfoView: View {
                                         teachersComment: nil
                                     )
                                     
-                                    viewModel.sendTask(updatedTask: updatedTask)
+                                    viewModel.sendTask(updatedTask: updatedTask) { success in
+                                        if success {
+                                            isPresented = false
+                                        }
+                                    }
                                 }) {
                                     Text("Отправить на проверку")
                                         .foregroundColor(Color.background)
@@ -163,7 +174,7 @@ struct FullTaskInfoView: View {
                         }
                     }
                 } else if taskStatus == TaskStatus.onCheck {
-                    if userRole == "teacher" { // опять же надо менять
+                    if userRole == Role.teacher {
                         Text("Комментарий")
                             .foregroundStyle(Color.foreground)
                             .bold()
@@ -196,7 +207,11 @@ struct FullTaskInfoView: View {
                                     teachersComment: comment
                                 )
                                 
-                                viewModel.sendTask(updatedTask: updatedTask)
+                                viewModel.sendTask(updatedTask: updatedTask) { success in
+                                    if success {
+                                        isPresented = false
+                                    }
+                                }
                             } label: {
                                 Text("Отправить")
                                     .foregroundColor(Color.background)
@@ -250,7 +265,7 @@ struct FullTaskInfoView: View {
                         .lineLimit(1)
                         .padding(.top, 10)
                     
-                    Text(userRole == "teacher" ? task.studentId : task.teacherId) // тут надо эту роль получать
+                    Text(userRole == Role.teacher ? task.studentId : task.teacherId) 
                         .foregroundStyle(Color.foreground)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
@@ -335,8 +350,7 @@ struct FullTaskInfoView: View {
                     task: task
                 )
                 .onAppear {
-                    // Для превью можно имитировать загрузку документов
-                    let viewModel = FullTaskInfoViewModel(isPresented: true, task: task)
+                    let viewModel = FullTaskInfoViewModel(task: task)
                     viewModel.attachedDocuments = [
                         URL(string: "file:///doc1.pdf")!,
                         URL(string: "file:///doc2.docx")!
@@ -350,7 +364,6 @@ struct FullTaskInfoView: View {
 }
 
 #Preview {
-    // Создаем тестовую задачу
     let testTask = HomeTask(
         id: "1",
         subject: "Математика",
@@ -363,7 +376,6 @@ struct FullTaskInfoView: View {
         teachersComment: nil
     )
     
-    // Создаем binding для isPresented
     struct PreviewWrapper: View {
         @State private var isPresented = true
         let task: HomeTask
@@ -458,8 +470,6 @@ struct FullTaskInfoView: View {
                 task: task
             )
             .onAppear {
-                // Здесь можно установить начальные значения для State переменных
-                // Но лучше переделать саму FullTaskInfoView для приема роли через init
             }
         }
     }

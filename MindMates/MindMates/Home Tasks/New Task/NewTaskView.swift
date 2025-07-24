@@ -9,15 +9,16 @@ import SwiftUI
 
 struct NewTaskView: View {
     @Binding var isPresented: Bool
-    
-    @State private var subject : String = ""
-    @State private var teacherId : String = ""
-    @State private var studentId : String = ""
+    @StateObject private var viewModel = NewTaskViewModel()
+        
+    @State private var subject: String = ""
     @State private var description: String = ""
-    @State private var deadline : Date = Date()
-    @State private var studentEmail : String = ""
+    @State private var deadline: Date = Date()
+    @State private var studentEmail: String = ""
+    @State private var isLoading = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
-
     var body: some View {
         ZStack {
             
@@ -136,7 +137,7 @@ struct NewTaskView: View {
                         
                         VStack(alignment: .leading, spacing: 20) {
                             Button {
-                                
+                                createTask()
                             } label: {
                                 Text("Создать")
                                     .font(.title3)
@@ -155,6 +156,38 @@ struct NewTaskView: View {
             .background(Color.background)
             .cornerRadius(15)
             .shadow(radius: 20)
+        }
+        .alert("Ошибка", isPresented: $showAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage)
+        }
+    }
+    
+    private func createTask() {
+        guard !subject.isEmpty, !studentEmail.isEmpty, !description.isEmpty else {
+            alertMessage = "Пожалуйста, заполните все поля"
+            showAlert = true
+            return
+        }
+            
+        isLoading = true
+            
+        viewModel.createNewTask(
+            subject: subject,
+            studentEmail: studentEmail,
+            description: description,
+            deadline: deadline
+        ) { result in
+            isLoading = false
+                
+            switch result {
+            case .success:
+                isPresented = false
+            case .failure(let error):
+                alertMessage = "Ошибка при создании задания: \(error.localizedDescription)"
+                showAlert = true
+            }
         }
     }
 }

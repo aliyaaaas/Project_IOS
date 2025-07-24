@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct TaskCellView: View {
-    let task : HomeTask
+    let task: HomeTask
     @State private var showFullInfo = false
+    @State private var teacherName: String = ""
+    @State private var studentName: String = ""
+    @State private var isLoadingNames = false
+        
+    private let db = Firestore.firestore()
     
     var body: some View {
         ZStack {
@@ -27,8 +33,13 @@ struct TaskCellView: View {
                         .bold()
                         .foregroundStyle(Color.foreground)
                     
-                    Text(task.teacherId) // тут надо по айди получать имя
-                        .foregroundStyle(Color.foreground)
+                    if isLoadingNames {
+                        ProgressView()
+                        .scaleEffect(0.5)
+                    } else {
+                        Text(teacherName.isEmpty ? "Загрузка..." : teacherName)
+                            .foregroundStyle(Color.foreground)
+                    }
                     
                     HStack {
                         Text("Дедлайн: ")
@@ -72,6 +83,27 @@ struct TaskCellView: View {
             )
         }
     }
+    
+    private func fetchUserNames() async {
+            isLoadingNames = true
+            async let teacher = fetchUserName(uid: task.teacherId)
+            async let student = fetchUserName(uid: task.studentId)
+            
+            let (teacherResult, studentResult) = await (teacher, student)
+            teacherName = teacherResult
+            studentName = studentResult
+            isLoadingNames = false
+        }
+        
+        private func fetchUserName(uid: String) async -> String {
+            do {
+                let document = try await db.collection("users").document(uid).getDocument()
+                return document.data()?["displayName"] as? String ?? uid // Возвращаем ID, если имя не найдено
+            } catch {
+                print("Ошибка загрузки имени: \(error)")
+                return uid
+            }
+        }
 }
 
 #Preview("Проверенная задача") {

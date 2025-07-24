@@ -17,26 +17,34 @@ class FirebaseStorage {
     private init() {}
     
     func saveUser(_ user: User, role: Role = .student) {
-        let uid = user.uid
         let userData: [String: Any] = [
             "uid": user.uid,
-            "email": user.email,
-            "displayName": user.email,
+            "email": user.email ?? "",
+            "displayName": user.displayName ?? user.email ?? "Нет имени",
             "createdAt": FieldValue.serverTimestamp(),
             "role": role.rawValue
         ]
-        db.collection("users").document("userInformation").setData(userData)
+        db.collection("users").document(user.uid).setData(userData) 
     }
     
-    func getUserRole() async -> Role {
-        do {
-            let document = try await db.collection("users").document("userInformation").getDocument()
-            guard let roleString = document.data()?["role"] as? String else {
-                fatalError("Role not found")
+    func getUserRole(uid: String) async throws -> Role {
+        let document = try await db.collection("users").document(uid).getDocument()
+        guard let data = document.data(),
+                let roleString = data["role"] as? String,
+                let role = Role(rawValue: roleString) else {
+            throw NSError(domain: "Role not found", code: 0)
+        }
+        return role
+    }
+    
+    func getUserName(uid: String, completion: @escaping (String?) -> Void) {
+        db.collection("users").document(uid).getDocument { document, error in
+            if let document = document, document.exists {
+                let name = document.data()?["displayName"] as? String
+                completion(name)
+            } else {
+                completion(nil)
             }
-            return Role(rawValue: roleString)!
-        } catch {
-            fatalError("Error getting role: \(error)")
         }
     }
 }
