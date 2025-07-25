@@ -14,6 +14,7 @@ struct SignInView: View {
     @Binding var index : Int
     @State var hasError: Bool = false
     @EnvironmentObject var authViewModel: AuthViewModel
+    @Binding var isAuthenticated: Bool
     
     var body : some View {
         ZStack(alignment: .bottom) {
@@ -69,7 +70,11 @@ struct SignInView: View {
             }
             
             Button(action: {
-                authViewModel.login(email: email, password: pass)
+                authViewModel.login(email: email, password: pass) { success in
+                    if success {
+                        isAuthenticated = true
+                    }
+                }
             }) {
                 Text("Войти")
                     .foregroundColor(.white)
@@ -89,7 +94,8 @@ struct SignInView: View {
 }
 
 #Preview {
-    SignInView(index: .constant(0))
+    SignInView(index: .constant(0), isAuthenticated: .constant(false))
+        .environmentObject(AuthViewModel())
 }
 
 

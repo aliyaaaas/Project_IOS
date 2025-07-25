@@ -12,12 +12,15 @@ struct TwoTabsView: View {
     @State private var selectedTab = 0
     @Namespace private var animationNamespace
     @State private var showNewTask = false
+    @StateObject var profileViewModel = ProfileViewModel()
        
-    let currentUserRole: Role
+    var currentUserRole: Role {
+        profileViewModel.role ?? .student
+    }
+    
     let currentUserId: String
 
-    init(currentUserRole: Role, currentUserId: String, viewModel: ScrollTasksViewModel = ScrollTasksViewModel()) {
-        self.currentUserRole = currentUserRole
+    init(currentUserId: String, viewModel: ScrollTasksViewModel = ScrollTasksViewModel()) {
         self.currentUserId = currentUserId
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -38,6 +41,9 @@ struct TwoTabsView: View {
             }
         }
         .environmentObject(viewModel)
+        .onAppear {
+            print("Текущая роль: \(profileViewModel.role?.rawValue ?? "nil")")
+        }
     }
     
     var ButtonView: some View {
@@ -102,10 +108,10 @@ struct TwoTabsView: View {
     var ContentTabView : some View {
         TabView(selection: $selectedTab) {
             
-            CurrentTasksView(currentUserId: currentUserId, currentUserRole: currentUserRole)
+            CurrentTasksView(currentUserId: currentUserId)
                 .tag(0)
             
-            ArchiveTasksView(currentUserId: currentUserId, currentUserRole: currentUserRole)
+            ArchiveTasksView(currentUserId: currentUserId)
             .tag(1)
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
@@ -114,29 +120,29 @@ struct TwoTabsView: View {
     }
 }
 
-struct TwoTabsView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // Преподаватель
-            TwoTabsView(
-                currentUserRole: .teacher,
-                currentUserId: "teacher_123"
-            )
-            .previewDisplayName("Преподаватель (пустой)")
-            
-            // Студент
-            TwoTabsView(
-                currentUserRole: .student,
-                currentUserId: "student_456"
-            )
-            .previewDisplayName("Студент (пустой)")
-            
-            // С задачами
-            TwoTabsView(
-                currentUserRole: .teacher,
-                currentUserId: "teacher_123"
-            )
-            .previewDisplayName("С задачами")
-        }
-    }
-}
+//struct TwoTabsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            // Преподаватель
+//            TwoTabsView(
+//                currentUserRole: .teacher,
+//                currentUserId: "teacher_123"
+//            )
+//            .previewDisplayName("Преподаватель (пустой)")
+//            
+//            // Студент
+//            TwoTabsView(
+//                currentUserRole: .student,
+//                currentUserId: "student_456"
+//            )
+//            .previewDisplayName("Студент (пустой)")
+//            
+//            // С задачами
+//            TwoTabsView(
+//                currentUserRole: .teacher,
+//                currentUserId: "teacher_123"
+//            )
+//            .previewDisplayName("С задачами")
+//        }
+//    }
+//}

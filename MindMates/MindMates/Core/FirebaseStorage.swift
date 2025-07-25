@@ -24,7 +24,7 @@ class FirebaseStorage {
             "createdAt": FieldValue.serverTimestamp(),
             "role": role.rawValue
         ]
-        db.collection("users").document(user.uid).setData(userData) 
+        db.collection("users").document(user.uid).setData(userData)
     }
     
     func getUserRole(uid: String) async throws -> Role {

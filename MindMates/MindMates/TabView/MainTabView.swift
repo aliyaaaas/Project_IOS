@@ -33,7 +33,6 @@ struct MainTabView: View {
                     }
                 
                 TwoTabsView(
-                    currentUserRole: profileViewModel.role ?? .student,
                     currentUserId: profileViewModel.uid ?? "default_user_id"
                 )
                     .tag(Tab.tasks)

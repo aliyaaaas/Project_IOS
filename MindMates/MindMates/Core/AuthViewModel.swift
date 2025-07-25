@@ -13,49 +13,48 @@ class AuthViewModel: ObservableObject {
     @Published var isAuthenticated: Bool
     @Published var error: String = ""
     
+    private let authService = AuthService()
+    
     init() {
-        let user = Auth.auth().currentUser
-        self.user = user
-        self.isAuthenticated = user != nil
-        
-        // Убрать!!!
-        signOut()
+        self.user = authService.currentUser
+        self.isAuthenticated = authService.currentUser != nil
     }
     
-    func login(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+    func login(email: String, password: String, completion: @escaping (Bool) -> Void) {
+        authService.login(email: email, password: password) { success, errorMessage in
             DispatchQueue.main.async {
-                if let error {
-                    let errorString = error.localizedDescription
-                    self.error = errorString
-                }
-                if let user = result?.user {
-                    self.user = user
+                if success {
+                    self.user = self.authService.currentUser
                     self.isAuthenticated = true
+                    self.error = ""
+                    completion(true)
+                } else {
+                    self.error = errorMessage ?? "Неизвестная ошибка"
+                    completion(false)
                 }
             }
         }
     }
     
-    func singUp(email: String, password: String) {
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+    func singUp(email: String, password: String, completion: @escaping (Bool) -> Void) {
+        authService.register(email: email, password: password) { success, errorMessage in
             DispatchQueue.main.async {
-                if let error {
-                    let errorString = error.localizedDescription
-                    self.error = errorString
-                }
-                if let user = result?.user {
-                    self.user = user
+                if success {
+                    self.user = self.authService.currentUser
                     self.isAuthenticated = true
-                    
-                    FirebaseStorage.shared.saveUser(user)
+                    self.error = ""
+                    FirebaseStorage.shared.saveUser(self.user!)
+                    completion(true)
+                } else {
+                    self.error = errorMessage ?? "Неизвестная ошибка"
+                    completion(false)
                 }
             }
         }
     }
     
     func signOut() {
-        try? Auth.auth().signOut()
+        authService.logout()
         user = nil
         isAuthenticated = false
     }

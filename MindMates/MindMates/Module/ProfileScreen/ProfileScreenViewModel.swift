@@ -18,7 +18,12 @@ enum Role: String {
 class ProfileViewModel: ObservableObject {
     @Published var displayName: String = ""
     @Published var email: String = ""
-    @Published var role: Role?
+    
+    @Published var role: Role? {
+        didSet {
+            objectWillChange.send()
+        }
+    }
     
     var uid: String? {
         Auth.auth().currentUser?.uid
@@ -32,15 +37,16 @@ class ProfileViewModel: ObservableObject {
 
     func fetchCurrentUser() {
         guard let uid else { return }
-
-        db.collection("users").document("userInformation").getDocument { document, error in
+        
+        db.collection("users").document(uid).getDocument { document, error in
             if let document = document, document.exists {
                 let data = document.data()
                 self.displayName = data?["displayName"] as? String ?? "Нет имени"
                 self.email = data?["email"] as? String ?? "Нет почты"
-                self.role = Role(rawValue: data?["role"] as? String ?? "Ученик" ) ?? .student
+                self.role = Role(rawValue: data?["role"] as? String ?? "Студент") ?? .student
+                print("Загружена роль: \(self.role?.rawValue ?? "nil")") // Отладочный вывод
             } else {
-                print("Документ не найден: \(error?.localizedDescription ?? "нет ошибки")")
+                print("Ошибка загрузки пользователя: \(error?.localizedDescription ?? "неизвестная ошибка")")
             }
         }
     }

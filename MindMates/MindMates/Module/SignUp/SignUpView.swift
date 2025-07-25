@@ -13,6 +13,7 @@ struct SignUpView: View {
     @State var repass = ""
     @Binding var index: Int
     @State var error: String? = nil
+    @Binding var isAuthenticated: Bool
     
     @EnvironmentObject var authViewModel: AuthViewModel
     
@@ -76,10 +77,15 @@ struct SignUpView: View {
             
             Button(action: {
                 if pass != repass {
+                    authViewModel.error = "Пароли не совпадают"
                     return
                 }
-                
-                authViewModel.singUp(email: email, password: pass)
+                            
+                authViewModel.singUp(email: email, password: pass) { success in
+                    if success {
+                        isAuthenticated = true
+                    }
+                }
             }) {
                 Text("Зарегистрироваться")
                     .foregroundColor(.white)
@@ -97,5 +103,6 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView(index: .constant(0))
+    SignUpView(index: .constant(0), isAuthenticated: .constant(false))
+        .environmentObject(AuthViewModel())
 }

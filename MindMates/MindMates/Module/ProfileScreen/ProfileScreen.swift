@@ -51,7 +51,7 @@ struct ProfileScreen: View{
                             }
                             
                         } label: {
-                            Text(viewModel.role?.rawValue ?? "Error")
+                            Text(viewModel.role?.rawValue ?? "Выберите роль")
                                 .font(.headline)
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 12)

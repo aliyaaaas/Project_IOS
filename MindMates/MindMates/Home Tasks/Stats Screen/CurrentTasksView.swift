@@ -9,12 +9,15 @@ import SwiftUI
 
 struct CurrentTasksView: View {
     @EnvironmentObject var viewModel: ScrollTasksViewModel
+    @StateObject var profileViewModel = ProfileViewModel()
     let currentUserId: String
-    let currentUserRole: Role
     
-    init(currentUserId: String, currentUserRole: Role) {
+    var currentUserRole: Role {
+        profileViewModel.role ?? .student
+    }
+    
+    init(currentUserId: String) {
         self.currentUserId = currentUserId
-        self.currentUserRole = currentUserRole
     }
     
     private var filteredTasks: [HomeTask] {

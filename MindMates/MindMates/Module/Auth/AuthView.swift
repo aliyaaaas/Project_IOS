@@ -8,20 +8,30 @@ import SwiftUI
 
 struct AuthView: View {
     @State var index = 0
+    @State var isAuthenticated = false
+    @StateObject private var authViewModel = AuthViewModel()
     
     var body: some View {
-        VStack {
-            Image("logo1")
-                .resizable()
-                .frame(width: 70, height: 70)
-            
-            ZStack {
-                SignUpView(index: $index)
-                    .zIndex(Double(self.index))
-                SignInView(index: $index)
+        if authViewModel.isAuthenticated {
+            MainTabView()
+                .environmentObject(authViewModel)
+        } else {
+            VStack {
+                Image("logo1")
+                    .resizable()
+                    .frame(width: 70, height: 70)
+                        
+                ZStack {
+                    SignUpView(index: $index, isAuthenticated: $authViewModel.isAuthenticated)
+                        .zIndex(Double(self.index))
+                        .environmentObject(authViewModel)
+                            
+                    SignInView(index: $index, isAuthenticated: $authViewModel.isAuthenticated)
+                        .environmentObject(authViewModel)
+                }
             }
+            .padding(.vertical)
         }
-        .padding(.vertical)
     }
 }
 

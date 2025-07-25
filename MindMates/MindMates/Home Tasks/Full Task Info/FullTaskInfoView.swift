@@ -12,10 +12,14 @@ struct FullTaskInfoView: View {
     @Binding var isPresented: Bool
     let task: HomeTask
     @State private var taskStatus: TaskStatus
-    @State private var userRole: Role?
+    @StateObject var profileViewModel = ProfileViewModel()
     @StateObject private var viewModel: FullTaskInfoViewModel
     @State private var showDocumentPicker = false
     @State private var comment: String = ""
+    
+    var userRole : Role {
+        profileViewModel.role ?? .student
+    }
         
     init(isPresented: Binding<Bool>, task: HomeTask) {
         self._isPresented = isPresented
@@ -29,18 +33,6 @@ struct FullTaskInfoView: View {
             backgroundView
             
             mainContentView
-        }
-        .task {
-            await loadUserRole()
-        }
-    }
-    
-    private func loadUserRole() async {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        do {
-            userRole = try await FirebaseStorage.shared.getUserRole(uid: uid)
-        } catch {
-            print("Ошибка загрузки роли: \(error)")
         }
     }
     
