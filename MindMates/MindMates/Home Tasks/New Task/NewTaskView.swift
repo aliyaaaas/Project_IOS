@@ -39,16 +39,16 @@ struct NewTaskView: View {
                                 .bold()
                             
                             Picker("Выберите предмет из списка", selection: $subject) {
-                                Text("Математика").tag(1)
-                                Text("Русский").tag(2)
-                                Text("Физика").tag(3)
-                                Text("Английский язык").tag(4)
-                                Text("Биология").tag(5)
-                                Text("Химия").tag(6)
-                                Text("История").tag(7)
-                                Text("География").tag(8)
-                                Text("Литература").tag(9)
-                                Text("Информатика").tag(10)
+                                Text("Математика").tag("Математика")
+                                Text("Русский").tag("Русский")
+                                Text("Физика").tag("Физика")
+                                Text("Английский язык").tag("Английский язык")
+                                Text("Биология").tag("Биология")
+                                Text("Химия").tag("Химия")
+                                Text("История").tag("История")
+                                Text("География").tag("География")
+                                Text("Литература").tag("Литература")
+                                Text("Информатика").tag("Информатика")
                             }
                             .pickerStyle(.menu)
                             .tint(Color.foreground)
@@ -61,7 +61,9 @@ struct NewTaskView: View {
                                     RoundedRectangle(cornerRadius: 5)
                                         .stroke(Color.foreground, lineWidth: 2)
                                     }
+                                .allowsHitTesting(false)
                             }
+                            .contentShape(Rectangle())
                             
                         }
                         .padding(.horizontal, 10)

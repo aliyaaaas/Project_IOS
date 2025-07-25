@@ -25,7 +25,7 @@ struct SettingView: View {
                 Spacer()
             }
         }
-        .padding(.bottom, 64)
+        .padding(.bottom, 150)
     }
 }
 
