@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-class NewTaskViewModel : ObservableObject {
+class NewTaskViewModel: ObservableObject {
     private let databaseService = HomeTaskDatabaseService()
     
     func createNewTask(
@@ -22,42 +22,59 @@ class NewTaskViewModel : ObservableObject {
             completion(.failure(NSError(domain: "AuthError", code: 401, userInfo: [NSLocalizedDescriptionKey: "Пользователь не авторизован"])))
             return
         }
-            
+        
+        if currentUser.email == studentEmail {
+            completion(.failure(NSError(domain: "ValidationError", code: 400, userInfo: [NSLocalizedDescriptionKey: "Нельзя создать задание для самого себя"])))
+            return
+        }
+        
         Auth.auth().fetchSignInMethods(forEmail: studentEmail) { methods, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-                
+            
             guard let methods = methods, !methods.isEmpty else {
                 completion(.failure(NSError(domain: "UserNotFound", code: 404, userInfo: [NSLocalizedDescriptionKey: "Пользователь с таким email не найден"])))
                 return
             }
-                
-            Auth.auth().signIn(withEmail: studentEmail, password: "dummyPassword") { result, error in
-                if let error = error {
+            
+            self.getUserIdByEmail(studentEmail) { result in
+                switch result {
+                case .success(let studentId):
+                    let newTask = HomeTask(
+                        subject: subject,
+                        teacherId: currentUser.uid,
+                        studentId: studentId,
+                        description: description,
+                        deadline: deadline,
+                        status: .notStarted
+                    )
+                    
+                    self.databaseService.addHomeTask(newTask) { result in
+                        completion(result)
+                    }
+                    
+                case .failure(let error):
                     completion(.failure(error))
-                    return
-                }
-                    
-                guard let studentId = result?.user.uid else {
-                    completion(.failure(NSError(domain: "AuthError", code: 401, userInfo: [NSLocalizedDescriptionKey: "Не удалось получить ID ученика"])))
-                    return
-                }
-
-                let newTask = HomeTask(
-                    subject: subject,
-                    teacherId: currentUser.uid,
-                    studentId: studentId,
-                    description: description,
-                    deadline: deadline,
-                    status: .notStarted
-                )
-                    
-                self.databaseService.addHomeTask(newTask) { result in
-                    completion(result)
                 }
             }
+        }
+    }
+    
+    private func getUserIdByEmail(_ email: String, completion: @escaping (Result<String, Error>) -> Void) {
+        Auth.auth().fetchSignInMethods(forEmail: email) { methods, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard methods != nil else {
+                completion(.failure(NSError(domain: "UserNotFound", code: 404, userInfo: [NSLocalizedDescriptionKey: "Пользователь с таким email не найден"])))
+                return
+            }
+            
+            completion(.failure(NSError(domain: "NotImplemented", code: 501, userInfo: [NSLocalizedDescriptionKey: "Функционал получения UID по email не реализован"])))
         }
     }
 }

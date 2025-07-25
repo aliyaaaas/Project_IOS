@@ -26,7 +26,7 @@ struct MainTabView: View {
     var body: some View {
         ZStack {
             TabView(selection: $selectedTab) {
-                ClassesScreen(goToPastTaskScreen: .constant(false), goToFutureClassScreen: .constant(false))
+                ContentView()
                     .tag(Tab.lessons)
                     .tabItem {
                         Label("", systemImage: Tab.lessons.rawValue)
