@@ -6,17 +6,22 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct MindMatesApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    private let authViewModel = AuthViewModel() // Не используем @StateObject здесь
+    @StateObject private var authViewModel = AuthViewModel()
+        
+        init() {
 
+        }
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 MainContentView()
-                    .environmentObject(authViewModel) // Переносим сюда
+                    .environmentObject(authViewModel) 
             }
         }
     }
