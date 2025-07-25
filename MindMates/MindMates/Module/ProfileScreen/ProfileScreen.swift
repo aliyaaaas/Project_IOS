@@ -100,8 +100,22 @@ struct ProfileScreen: View{
                 
             }
             .background(.white)
-            .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
-            .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+            .padding(.top, {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+                    return 0
+                }
+                return windowScene.windows.first?.safeAreaInsets.top ?? 0
+            }())
+            .padding(.bottom, {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+                    return 0
+                }
+                return windowScene.windows.first?.safeAreaInsets.bottom ?? 0
+            }())
+           
+            //.background(.white)
+            //.padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+            //.padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
             
             VStack(spacing: 0) {
                 HStack(spacing: 15) {
@@ -121,8 +135,18 @@ struct ProfileScreen: View{
                     
                     Spacer(minLength: 0)
                 }//
-                .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+                
+                .padding(.top, {
+                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                          let window = windowScene.windows.first else {
+                        return 0
+                    }
+                    return window.safeAreaInsets.top
+                }())
                 .padding()
+                
+                //.padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+                //.padding()
                 
                 
                 GeometryReader { _ in

@@ -8,14 +8,21 @@
 import FirebaseAuth
 
 class AuthService: ObservableObject {
-    @Published var currentUser: User? // Текущий пользователь
-    
-    // Инициализация с отслеживанием состояния входа
+    @Published var currentUser: User?
+    private var authListenerHandle: AuthStateDidChangeListenerHandle?
+  
     init() {
-        Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
+        
+        authListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] (_, user) in
             self?.currentUser = user
         }
     }
+    
+    deinit {
+            if let handle = authListenerHandle {
+                Auth.auth().removeStateDidChangeListener(handle)
+            }
+        }
     
     // Вход по email и паролю
     func login(email: String, password: String, completion: @escaping (Bool, String?) -> Void) {
